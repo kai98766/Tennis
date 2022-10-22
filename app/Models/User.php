@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Tournament;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -41,4 +43,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function tournaments()   
+    {
+    return $this->hasMany(Tournament::class);  
+    }
+    public function getByUser(){
+        return $this::with('tournaments')->find(Auth::id())->tournaments()->get();
+    }
 }
