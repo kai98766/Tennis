@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Tournament;
+use App\Models\Target;
+use App\Models\Account;
 use Auth;
 
 class User extends Authenticatable
@@ -47,7 +49,24 @@ class User extends Authenticatable
     {
     return $this->hasMany(Tournament::class);  
     }
-    public function getByUser(){
+    public function targets()   
+    {
+    return $this->hasMany(Target::class);  
+    } 
+    public function accounts()   
+    {
+    return $this->hasOne(Account::class);  
+    } 
+    public function getTournament()
+    {
         return $this::with('tournaments')->find(Auth::id())->tournaments()->get();
+    }
+    public function getTarget()
+    {
+        return $this::with('targets')->find(Auth::id())->targets()->get();
+    }
+    public function getAccount()
+    {
+        return $this::with('accounts')->find(Auth::id())->accounts()->get();
     }
 }
